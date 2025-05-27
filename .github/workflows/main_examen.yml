@@ -46,6 +46,9 @@ jobs:
         with:
           name: java-app
 
+      - name: Move .jar to root for deployment
+        run: mv java-app/*.jar app.jar
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -59,4 +62,4 @@ jobs:
         with:
           app-name: 'examen'
           slot-name: 'Production'
-          package: java-app/*.jar
+          package: app.jar
