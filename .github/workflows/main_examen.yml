@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy JAR app to Azure Web App - examen
 
 on:
@@ -10,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -21,8 +24,8 @@ jobs:
           java-version: '17'
           distribution: 'microsoft'
 
-      - name: Build with Maven (skip tests)
-        run: mvn clean install -DskipTests
+      - name: Build with Maven
+        run: mvn clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -37,21 +40,21 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
   
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F360A29912C144B585D1780DFBAFF8C0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C6A2B8778C43466587C0CB2F140DF5A7 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_45CD29FD4574406193A60DFBB1F5085F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7E195CA9AE4A486DA7508EE11D6973DA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C3CAFD9159404844A465AF4536827F37 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7DDB197510FC4982B7F33AFCD69811BA }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -59,5 +62,5 @@ jobs:
         with:
           app-name: 'examen'
           slot-name: 'Production'
-          package: java-app/*.jar
-
+          package: '*.jar'
+          
