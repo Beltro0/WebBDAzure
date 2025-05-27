@@ -40,26 +40,26 @@ jobs:
       id-token: write
       contents: read
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: java-app
+   steps:
+  - name: Download artifact from build job
+    uses: actions/download-artifact@v4
+    with:
+      name: java-app
 
-      - name: Move .jar to root for deployment
-        run: mv java-app/*.jar app.jar
+  - name: Rename .jar for deployment
+    run: mv *.jar app.jar
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7E195CA9AE4A486DA7508EE11D6973DA }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C3CAFD9159404844A465AF4536827F37 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7DDB197510FC4982B7F33AFCD69811BA }}
+  - name: Login to Azure
+    uses: azure/login@v2
+    with:
+      client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7E195CA9AE4A486DA7508EE11D6973DA }}
+      tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C3CAFD9159404844A465AF4536827F37 }}
+      subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7DDB197510FC4982B7F33AFCD69811BA }}
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'examen'
-          slot-name: 'Production'
-          package: app.jar
+  - name: Deploy to Azure Web App
+    id: deploy-to-webapp
+    uses: azure/webapps-deploy@v3
+    with:
+      app-name: 'examen'
+      slot-name: 'Production'
+      package: app.jar
