@@ -40,14 +40,14 @@ jobs:
       id-token: write
       contents: read
 
-    steps:
+        steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
-      - name: Move .jar to root for deployment
-        run: mv java-app/*.jar app.jar
+      - name: Rename .jar for deployment
+        run: mv *.jar app.jar
 
       - name: Login to Azure
         uses: azure/login@v2
